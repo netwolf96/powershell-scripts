@@ -1,4 +1,4 @@
-﻿function Sign-XML {
+﻿function SIGN-XML {
     param(
         [string]$xmlFilePath,
         [string]$certificateCommonName
