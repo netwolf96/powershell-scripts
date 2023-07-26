@@ -1,6 +1,6 @@
 function NEW-SIGNEDXML {
     
-    	<#
+    <#
 	.SYNOPSIS
 	Signs an XML file using a user certificate and saves the signed XML to a new file.
 	

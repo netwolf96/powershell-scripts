@@ -1,56 +1,81 @@
 function TEST-XMLSIGNATURE {
+    
+<#
+.SYNOPSIS
+This function verifies the digital signatures in an XML file using a specified certificate.
+
+.DESCRIPTION
+The TEST-XMLSIGNATURE function verifies digital signatures in an XML file using the X.509 certificate's public key. It searches for "Signature" elements in the XML file and validates each signature using the specified certificate's public key. If the signatures are valid, the function will display a success message; otherwise, it will indicate that the signature is invalid or any encountered errors.
+
+.PARAMETER XmlFilePath
+Specifies the path of the XML file containing the digital signatures to be verified.
+
+.PARAMETER CertificateSubjectName
+Specifies the subject name (common name) of the X.509 certificate used for signature validation.
+
+.EXAMPLE
+TEST-XMLSIGNATURE -XmlFilePath "C:\path\to\example.xml" -CertificateSubjectName "CN=ExampleCertificate"
+
+This example runs the function to verify digital signatures in the XML file located at "C:\path\to\example.xml". It uses the X.509 certificate with the subject name "CN=ExampleCertificate" for signature validation.
+
+.NOTES
+Copyright © 2023 netzack-it. All rights reserved. This script is provided "as-is" without any warranties or guarantees. Use at your own risk.
+#>
+    
     param (
+        [Parameter(Mandatory=$true)]
         [string]$XmlFilePath,
+        [Parameter(Mandatory=$true)]
         [string]$CertificateSubjectName
     )
 
     try {
-        # Laden der XML-Datei
+        # Load the XML file
         $xmlDocument = New-Object System.Xml.XmlDocument
         $xmlDocument.PreserveWhitespace = $true
         $xmlDocument.Load($XmlFilePath)
 
-        # Suche nach der Signatur im XML-Dokument
+        # Search for the signature in XML document
         $signedXml = New-Object System.Security.Cryptography.Xml.SignedXml($xmlDocument)
 
-        # Finde alle Signaturen im XML-Dokument
+        # Find all signatures in the XML document
         $signatures = $xmlDocument.GetElementsByTagName("Signature")
 
         if ($signatures.Count -eq 0) {
-            throw "Keine Signaturen im XML-Dokument gefunden."
+            throw "No signatures found in XML document."
         }
 
-        # Öffnen des Windows Zertifikatsspeichers für den aktuellen Benutzer
+        # Open the Windows certificate store for the current user
         $store = New-Object System.Security.Cryptography.X509Certificates.X509Store([System.Security.Cryptography.X509Certificates.StoreName]::My, [System.Security.Cryptography.X509Certificates.StoreLocation]::CurrentUser)
         $store.Open([System.Security.Cryptography.X509Certificates.OpenFlags]::ReadOnly)
 
-        # Zertifikatsauswahl über den Common Name (cn)
+        # Certificate selection via the common name (cn)
         $certificates = $store.Certificates.Find([System.Security.Cryptography.X509Certificates.X509FindType]::FindBySubjectName, $CertificateSubjectName, $false)
 
         if ($certificates.Count -eq 0) {
-            throw "Zertifikat mit dem angegebenen Common Name wurde im Zertifikatsspeicher nicht gefunden."
+            throw "Certificate with the specified common name was not found in the certificate store."
         }
 
-        # Das erste gefundene Zertifikat auswählen (falls es mehrere mit dem gleichen Common Name gibt)
+        # Select the first certificate found (if there are several with the same common name)
         $certificate = $certificates[0]
 
-        # Validierung jeder Signatur im XML-Dokument
+        # Validation of each signature in the XML document
         foreach ($signature in $signatures) {
             $signedXml.LoadXml($signature)
             $isValid = $signedXml.CheckSignature($certificate.PublicKey.Key)
 
             if ($isValid) {
-                Write-Host "Die Signatur ist gültig."
+                Write-Host "Signature is valid." -ForegroundColor Green -Debug
             } else {
-                Write-Host "Die Signatur ist ungültig."
+                Write-Host "Signature is invalid." -ForegroundColor Red -Debug
             }
         }
     }
     catch {
-        Write-Host "Fehler bei der Signaturüberprüfung: $_"
+        Write-Host "Signature verification error: $_" -ForegroundColor Red -Debug
     }
     finally {
-        # Schließen des Zertifikatsspeichers, um Ressourcen freizugeben
+        # Closing the certificate store to free resources
         if ($store) {
             $store.Close()
         }
