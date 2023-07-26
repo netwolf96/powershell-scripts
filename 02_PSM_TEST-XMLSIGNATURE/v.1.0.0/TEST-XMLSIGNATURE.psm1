@@ -29,6 +29,10 @@ Copyright © 2023 netzack-it. All rights reserved. This script is provided "as-i
         [string]$CertificateSubjectName
     )
 
+    # Loading the required .NET classes
+    Add-Type -AssemblyName System.Security
+    Add-Type -AssemblyName System.Xml
+
     try {
         # Load the XML file
         $xmlDocument = New-Object System.Xml.XmlDocument
