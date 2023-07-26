@@ -24,3 +24,16 @@ Signs the XML file "C:\Files\Document.xml" using the certificate with the common
 #### Notes
 - This function requires the .NET classes from the System.Security namespace for signing the XML using a certificate.
 - The script is provided "as-is" without any warranties or guarantees. Use at your own risk.
+
+
+### Version 2.0.0 - Released on [26.07.2023]
+
+#### Added
+- Upgraded the signature method to use SHA-256 for improved security.
+
+#### Changed
+- Refactored the function to improve code efficiency and readability.
+
+#### Notes
+- The function now uses SHA-256 as the signature method, enhancing the security of the XML signatures.
+- The code has been refactored to optimize performance and make it easier to maintain.
