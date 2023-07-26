@@ -32,6 +32,7 @@
 
     # Loading the required .NET classes
     Add-Type -AssemblyName System.Security
+    Add-Type -AssemblyName System.Xml
 
     # Search for certificates in the user certificate store
     $certs = Get-ChildItem -Path Cert:\CurrentUser\My | Where-Object { $_.Subject -like "*CN=$certificateCommonName*" }
@@ -78,5 +79,5 @@
     $signedXmlFilePath = $xmlFilePath -replace ".xml$", "_signed.xml"
     $xmlDocument.Save($signedXmlFilePath)
 
-    Write-Host "XML file successfully signed and saved using the user certificate (CN: $certificateCommonName): $signedXmlFilePath"
+    Write-Host "XML file successfully signed and saved using the user certificate (CN: $certificateCommonName): $signedXmlFilePath" -ForegroundColor Green
 }
