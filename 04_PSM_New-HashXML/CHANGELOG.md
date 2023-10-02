@@ -12,6 +12,27 @@
 - Utilizes the `Get-FileHash` cmdlet to calculate SHA256 hash values for files.
 - Provides a clear and concise synopsis, description, and example in the function's documentation.
 
+#### XML File Structure
+```xml
+<HashValues>
+    <File>
+        <Name>file1.txt</Name>
+        <Hash>
+            <Algorithm>SHA256</Algorithm>
+            <Value>3F1B6FEEA02C1B175D0E9EB61F9F2C50A50EAEA06BC0D57737C4C1E12D6011C2</Value>
+        </Hash>
+    </File>
+    <File>
+        <Name>file2.docx</Name>
+        <Hash>
+            <Algorithm>SHA256</Algorithm>
+            <Value>59B32F8ECD8E06BB393A49FA3F251D3D7E6A4C5E1685E1C62F6E70322B892EE1</Value>
+        </Hash>
+    </File>
+    <!-- More files and hash entries go here -->
+</HashValues>
+```
+
 #### Usage
 ```powershell
 # Generate an XML file containing SHA256 hash values of files in a directory
