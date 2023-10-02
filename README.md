@@ -32,6 +32,25 @@ The `TEST-XMLSIGNATURE` function verifies digital signatures in an XML file usin
 - `XmlFilePath`: Specifies the path of the XML file containing the digital signatures to be verified.
 - `CertificateSubjectName`: Specifies the subject name (common name) of the X.509 certificate used for signature validation.
 
+### `New-HashXML`
+
+#### Synopsis
+
+Generates an XML file containing the hash values (SHA256) of files in a given directory.
+
+#### Description
+
+This function recursively scans a directory and creates an XML file that includes the file names and their corresponding SHA256 hash values.
+
+#### Parameters
+
+- `directory`: The directory path where the files are located.
+- `xmlPath`: The path of the XML file to be generated.
+
+### Removing Duplicate Certificates
+
+The provided script removes duplicate certificates from the specified certificate store (`Root` in this case).
+
 ## Installation
 
 1. Clone or download this repository to your local machine.
@@ -52,6 +71,13 @@ NEW-SIGNEDXML -XmlFilePath "C:\path\to\example.xml" -CertificateSubjectName "CN=
 TEST-XMLSIGNATURE -XmlFilePath "C:\path\to\example.xml" -CertificateSubjectName "CN=ExampleCertificate"
 ```
 
+4. Use the `New-HashXML` function to generate an XML file containing the hash values of files in a directory.
+
+```powershell
+# Generate an XML file containing hash values of files in a directory
+New-HashXML -directory "C:\path\to\files" -xmlPath "C:\path\to\hashes.xml"
+```
+
 ## Requirements
 
 - PowerShell 5.1 or later.
@@ -64,4 +90,4 @@ TEST-XMLSIGNATURE -XmlFilePath "C:\path\to\example.xml" -CertificateSubjectName 
 
 ## License
 
-Copyright © 2023 netzack-it.
+Copyright © 2023 netzack-it. All rights reserved. This script is provided "as-is" without any warranties or guarantees. Use at your own risk.
