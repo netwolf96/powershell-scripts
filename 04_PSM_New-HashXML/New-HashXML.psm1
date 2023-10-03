@@ -1,4 +1,4 @@
-function New-HashXML 
+function NEW-HASHXML 
 {
 
    <#
@@ -15,7 +15,7 @@ function New-HashXML
     The path of the XML file to be generated.
 
     .EXAMPLE
-    New-HashXML -directory "C:\Files" -xmlPath "C:\Hashes.xml"
+    NEW-HASHXML -directory "C:\Files" -xmlPath "C:\Hashes.xml"
     Generates an XML file "Hashes.xml" in the specified directory containing the SHA256 hash values of files in the "C:\Files" directory and its subdirectories.
     #>
 
