@@ -27,38 +27,38 @@ function NEW-HASHXML
         [string]$xmlPath
     )
 
-    # Erstellen des XmlDocument-Objekts
+    # Create the XmlDocument object
     $xmlDoc = New-Object System.Xml.XmlDocument -Verbose
 
-    # Erstellen des Root-Elements
+    # Create the root element
     $root = $xmlDoc.CreateElement("HashValues")
     $xmlDoc.AppendChild($root)
 
-    # Durchsuchen der Dateien im Verzeichnis
+    # Browse the files in the directory
     $files = Get-ChildItem -Path $directory -File -Recurse -Verbose
     foreach ($file in $files) 
     {
-        # Erstellen des <file> Elements
+        # Creating the <file> element
         $fileElement = $xmlDoc.CreateElement("File")
 
-        # Erstellen des <name> Elements innerhalb des <file> Elements
+        # create the <name> element inside the <file> element
         $nameElement = $xmlDoc.CreateElement("Name")
         $nameElement.InnerText = $file.Name
         $fileElement.AppendChild($nameElement)
 
-        # Hash-Wert der Datei abrufen
+        # Retrieve hash value of the file
         $fileHash = Get-FileHash -Path $file.FullName -Algorithm SHA256 -Verbose
 
-        # Erstellen des <hash> Elements innerhalb des <file> Elements
+        # create the <hash> element inside the <file> element
         $hashElement = $xmlDoc.CreateElement("Hash")
         $fileElement.AppendChild($hashElement)
 
-        # Erstellen des <algorithm> Elements innerhalb des <hash> Elements
+        # create the <algorithm> element inside the <hash> element
         $algorithmElement = $xmlDoc.CreateElement("Algorithm")
         $algorithmElement.InnerText = $fileHash.Algorithm
         $hashElement.AppendChild($algorithmElement)
 
-        # Erstellen des <value> Elements innerhalb des <hash> Elements
+        # create the <value> element inside the <hash> element
         $valueElement = $xmlDoc.CreateElement("Value")
         $valueElement.InnerText = $fileHash.Hash
         $hashElement.AppendChild($valueElement)
@@ -66,6 +66,6 @@ function NEW-HASHXML
         $root.AppendChild($fileElement)
     }
 
-    # Speichern des XML-Dokuments
+    # Save the XML document
         $xmlDoc.Save("$xmlPath")
 }

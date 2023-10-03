@@ -28,13 +28,13 @@
         [string]$hashesXMLPath
     )
 
-    # Dateien aus dem Ordner auflisten
+    # List files from folder
     $files = Get-ChildItem -Path $folderPath -File -Recurse
 
-    # XML-Datei einlesen
+    # Read XML file
     $xml = [xml](Get-Content -Path $hashesXMLPath)
 
-    # Hashtable zum Speichern der XML-Hashes erstellen
+    # Create a hashtable to store the XML hashes
     $hashesFromXML = @{}
     
     foreach ($hashNode in $xml.HashValues.File) 
@@ -44,10 +44,10 @@
         $hashesFromXML[$name] = $value
     }
 
-    # Variable, um den Status der Hash-Überprüfung zu speichern
+    # Variable to store the status of the hash check.
     $allHashesIdentical = $true
 
-    # Variable, um Dateien mit unterschiedlichen Hashes zu speichern
+    # variable to store files with different hashes
     $differentHashesFiles = @()
 
     foreach ($file in $files) 
@@ -55,7 +55,7 @@
         $fileHash = Get-FileHash -Path $file.FullName -Algorithm SHA256
         $fileName = $file.Name
 
-        # Hash aus der XML-Datei für die aktuelle Datei abrufen (falls vorhanden)
+        # Get hash from XML file for current file
         $xmlHash = $hashesFromXML[$fileName]
 
         if ($xmlHash -ne $null -and $fileHash.Hash -ne $xmlHash) 
@@ -79,8 +79,3 @@
         }
     }
 }
-
-# Verwenden Sie die Funktion, indem Sie die Pfade übergeben
-$folderPath = "D:\01_DOWNLOADS\"
-$hashesXMLPath = "C:\Users\Benjamin Quiel\Desktop\test.xml"
-Compare-Hashes -folderPath $folderPath -hashesXMLPath $hashesXMLPath
