@@ -55,4 +55,4 @@ function New-R2Burn {
 		}
 }
 
-Export-ModuleMember -Function New-R2BurnNew-R2Burn
+Export-ModuleMember -Function New-R2Burn
